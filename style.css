@@ -772,6 +772,7 @@ color:#ff004f;
     border-radius: 8px;
     position: relative;
     overflow: hidden;
+    box-shadow: 2px 2px 2px rgba(255, 255, 255, 0.4);
 }
 
 .card::before {
@@ -782,6 +783,11 @@ color:#ff004f;
     width: 4px;
     height: 100%;
     background: linear-gradient(var(--primary-color), var(--secondary-color));
+}
+
+
+.card:hover{
+    box-shadow: 2px 2px 8px rgba(255, 254, 254, 1.7);
 }
 
 .skill-bar {
