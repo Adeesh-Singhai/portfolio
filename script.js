@@ -35,6 +35,46 @@ document.addEventListener("DOMContentLoaded", () => {
     type();
 });
 
+
+// about nav handling
+
+document.addEventListener('DOMContentLoaded', function() {
+    const menuBtn = document.querySelector('.menu-btn');
+    const navItems = document.querySelector('.about-nav-items');
+    
+    menuBtn.addEventListener('click', function() {
+        navItems.classList.toggle('active');
+        
+        // Animate hamburger to X
+        const spans = this.getElementsByTagName('span');
+        this.classList.toggle('active');
+        
+        if (this.classList.contains('active')) {
+            spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+            spans[1].style.opacity = '0';
+            spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+        } else {
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
+        }
+    });
+
+    // Close menu when clicking a link
+    const navLinks = document.querySelectorAll('.about-nav-item');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navItems.classList.remove('active');
+            menuBtn.classList.remove('active');
+            const spans = menuBtn.getElementsByTagName('span');
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
+        });
+    });
+});
+
+
 // Tab Navigation
 const tablinks = document.getElementsByClassName("tab-links");
 const tabcontents = document.getElementsByClassName("tab-contents");
@@ -157,40 +197,3 @@ function closemenu() {
     sidemenu.style.right = "-200px";
 }
 
-// about nav handling
-
-document.addEventListener('DOMContentLoaded', function() {
-    const menuBtn = document.querySelector('.menu-btn');
-    const navItems = document.querySelector('.about-nav-items');
-    
-    menuBtn.addEventListener('click', function() {
-        navItems.classList.toggle('active');
-        
-        // Animate hamburger to X
-        const spans = this.getElementsByTagName('span');
-        this.classList.toggle('active');
-        
-        if (this.classList.contains('active')) {
-            spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-            spans[1].style.opacity = '0';
-            spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-        } else {
-            spans[0].style.transform = 'none';
-            spans[1].style.opacity = '1';
-            spans[2].style.transform = 'none';
-        }
-    });
-
-    // Close menu when clicking a link
-    const navLinks = document.querySelectorAll('.about-nav-item');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            navItems.classList.remove('active');
-            menuBtn.classList.remove('active');
-            const spans = menuBtn.getElementsByTagName('span');
-            spans[0].style.transform = 'none';
-            spans[1].style.opacity = '1';
-            spans[2].style.transform = 'none';
-        });
-    });
-});
