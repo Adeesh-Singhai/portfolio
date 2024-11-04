@@ -448,9 +448,9 @@ color:#ff004f;
         gap: 15px;
     }
 
-    .features-social-links a {
+    /* .features-social-links a {
         padding: 12px;
-    }
+    } */
 
     .features-social-links a svg {
         height: 30px;
