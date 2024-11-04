@@ -379,6 +379,11 @@ color:#ff004f;
     color: #e4405f;
 }
 
+.features-social-links a:hover.codeforces-icon svg {
+    color: #a4e4ff;
+}
+
+
 .gap-features {
     height: 20px;
 }
