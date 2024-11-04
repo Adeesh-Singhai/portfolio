@@ -474,7 +474,7 @@ color:#ff004f;
     gap: 12rem;
     background-color: var(--card-bg);
     padding: 1.0rem; */
-    /* border-radius: 4px; */
+    border-radius: 4px;
 /* }
 
 
@@ -990,7 +990,7 @@ color:#ff004f;
         position: relative;
     }
 
-    
+
     .menu-btn {
         display: flex;
     }
