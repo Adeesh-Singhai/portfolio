@@ -36,10 +36,11 @@ body{
 
 
 
-#header nav img{
+.logo{
     width:220px;
     height:70px;
-    margin: 2px;
+    margin-left: 10px;
+    border: white solid 1px;
     box-shadow: 0px 0px 5px rgb(248, 247, 247, 1.9);
 
 
@@ -207,11 +208,8 @@ nav{
 
 }
 
-.logo{
-    width:140px;
-    margin-left: 10px;
 
-}
+
 nav ul li{
     display: inline-block;
     list-style: none;
