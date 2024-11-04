@@ -431,9 +431,9 @@ color:#ff004f;
     }
 
     /* Adjust sizing for mobile */
-    .features-social-links a {
+    /* .features-social-links a {
         padding: 15px;
-    }
+    } */
 
     .features-social-links a svg {
         height: 30px;
