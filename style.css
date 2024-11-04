@@ -467,7 +467,7 @@ color:#ff004f;
     margin-left: 1rem;
 }
 
-/* .about-nav {
+.about-nav {
     border-top: 1px solid #94A3B8;
     display: flex;
     justify-content: center;
@@ -475,20 +475,12 @@ color:#ff004f;
     background-color: var(--card-bg);
     padding: 1.0rem; */
     /* border-radius: 4px; */
-/* } */
+/* }
 
 
 /* changes for about nav */
   
-.about-nav {
-    border-top: 1px solid #94A3B8;
-    display: flex;
-    justify-content: center;
-    gap: 12rem;
-    background-color: var(--card-bg);
-    padding: 1.0rem;
-    position: relative;
-}
+
 
 /* changes finished */
 
@@ -984,6 +976,21 @@ color:#ff004f;
 
 /* Mobile styles */
 @media screen and (max-width: 768px) {
+
+
+
+
+    .about-nav {
+        border-top: 1px solid #94A3B8;
+        display: flex;
+        justify-content: center;
+        gap: 12rem;
+        background-color: var(--card-bg);
+        padding: 1.0rem;
+        position: relative;
+    }
+
+    
     .menu-btn {
         display: flex;
     }
