@@ -181,7 +181,11 @@ function populateSkills() {
         nonTechnicalSkills.className = 'card';
 
         technicalSkills.innerHTML = `
-            <h2>Technical Skills</h2>
+            <h2 style="color: #25f52c;">Technical Skills</h2>
+            <br>
+
+        
+
             ${skills.technical.map(skill => `
                 <div>
                     <p>${skill.name}</p>
@@ -193,7 +197,8 @@ function populateSkills() {
         `;
 
         nonTechnicalSkills.innerHTML = `
-            <h2>Non-Tech Skills</h2>
+            <h2 style="color: #25f52c;">Non-Tech Skills</h2>
+            <br>
             ${skills.nonTechnical.map(skill => `
                 <div>
                     <p>${skill.name}</p>
