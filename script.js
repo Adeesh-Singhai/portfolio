@@ -13,7 +13,7 @@ window.addEventListener('resize', resizeCanvas);
 // Trail effect parameters
 const particles = [];
 const particleCount = 7000;
-const particleLife = 90;
+const particleLife = 9000;
 let mouseX = 0;
 let mouseY = 0;
 
@@ -44,7 +44,7 @@ class Particle {
 
 draw() {
 const opacity = this.life / particleLife;
-ctx.fillStyle = `rgba(255, 0, 79, ${opacity * 0.8})`;
+ctx.fillStyle = `rgba(2, 250, 233, ${opacity * 0.8})`;
 ctx.beginPath();
 const spikes = 5; // Number of star spikes
 const outerRadius = this.size * 2;
