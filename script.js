@@ -44,7 +44,7 @@ class Particle {
 
 draw() {
 const opacity = this.life / particleLife;
-ctx.fillStyle = `rgba(2, 250, 233, ${opacity * 0.8})`;
+ctx.fillStyle = `rgba(0, 191, 255, ${opacity * 0.5})`;
 ctx.beginPath();
 const spikes = 5; // Number of star spikes
 const outerRadius = this.size * 2;
