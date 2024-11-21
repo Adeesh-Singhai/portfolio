@@ -1,3 +1,137 @@
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+// Set canvas size
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// Trail effect parameters
+const particles = [];
+const particleCount = 7000;
+const particleLife = 90;
+let mouseX = 0;
+let mouseY = 0;
+
+class Particle {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.life = particleLife;
+        this.velocity = {
+            x: (Math.random() - 0.5) * 3,
+            y: (Math.random() - 0.5) * 2
+        };
+        this.size = Math.random() * 2.5 + 0.5;
+    }
+
+    update() {
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
+        this.life--;
+
+        // Reduced random movement for smoother trails
+        this.velocity.x += (Math.random() - 0.5) * 0.1;
+        this.velocity.y += (Math.random() - 0.5) * 0.1;
+    }
+
+   
+
+
+draw() {
+const opacity = this.life / particleLife;
+ctx.fillStyle = `rgba(255, 0, 79, ${opacity * 0.8})`;
+ctx.beginPath();
+const spikes = 5; // Number of star spikes
+const outerRadius = this.size * 2;
+const innerRadius = this.size;
+const step = Math.PI / spikes;
+
+for (let i = 0; i < Math.PI * 2; i += step) {
+const x = this.x + Math.cos(i) * outerRadius;
+const y = this.y + Math.sin(i) * outerRadius;
+ctx.lineTo(x, y);
+
+const innerX = this.x + Math.cos(i + step / 2) * innerRadius;
+const innerY = this.y + Math.sin(i + step / 2) * innerRadius;
+ctx.lineTo(innerX, innerY);
+}
+ctx.closePath();
+ctx.fill();
+}
+
+
+
+
+
+}
+
+// Update mouse position
+window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    
+    // Add new particles
+    for (let i = 0; i < 3; i++) {
+        if (particles.length < particleCount) {
+            particles.push(new Particle(mouseX, mouseY));
+        }
+    }
+});
+
+// Animation loop
+function animate() {
+    // Clear the entire canvas completely instead of using semi-transparent fill
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Update and draw particles
+    for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        particles[i].draw();
+
+        // Remove dead particles
+        if (particles[i].life <= 0) {
+            particles.splice(i, 1);
+        }
+    }
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Typing Effect
 const titles = ["Full Stack Web Developer.", "DSA Enthusiast.", "Software Engineer."];
 const typingDelay = 10;
