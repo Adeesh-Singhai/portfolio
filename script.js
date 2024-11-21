@@ -13,7 +13,7 @@ window.addEventListener('resize', resizeCanvas);
 // Trail effect parameters
 const particles = [];
 const particleCount = 7000;
-const particleLife = 9000;
+const particleLife = 90;
 let mouseX = 0;
 let mouseY = 0;
 
