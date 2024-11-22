@@ -35,7 +35,7 @@ body{
 }
 
 .particle-floating {
-    background-color: rgba(44, 62, 80, 0.1);
+    background-color: rgb(63 0 255 / 10%);
     transition: transform 0.3s ease-out;
 
 }
