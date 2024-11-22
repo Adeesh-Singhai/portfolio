@@ -25,18 +25,57 @@ body{
 }
 
 
-#canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1;
+
+
+.particle {
+    position: absolute;
     pointer-events: none;
+    transition: transform 0.15s ease-out;
 }
+
+.particle-floating {
+    background-color: rgba(55, 65, 81, 0.15);
+    transition: transform 0.3s ease-out;
+}
+
+.particle-orbiting {
+    background-color: rgba(59, 130, 246, 0.2);
+    transition: transform 0.15s ease-out;
+}
+
+.square {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.pentagon {
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+}
+
+.hexagon {
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+
 .content {
     position: relative;
-    z-index: 2;
+    z-index: 10;
     color: white;
+    padding: 2rem;
 }
+
+.cursor-tracer {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: rgba(59, 130, 246, 0.5);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+
+
 
 
 

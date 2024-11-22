@@ -1,136 +1,209 @@
 
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+class ParticleSystem {
+    constructor() {
+        this.floatingParticles = [];
+        this.orbitingParticles = [];
+        this.mouseX = window.innerWidth / 2;
+        this.mouseY = window.innerHeight / 2;
+        this.lastMouseX = this.mouseX;
+        this.lastMouseY = this.mouseY;
+        this.mouseSpeed = 0;
+        this.cursorTracer = document.querySelector('.cursor-tracer');
+        this.init();
+        this.setupEventListeners();
+        this.animate();
+    }
 
-// Set canvas size
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
+    init() {
+        // Create floating background particles
+        for (let i = 0; i < 30; i++) {
+            this.createFloatingParticle();
+        }
 
-// Trail effect parameters
-const particles = [];
-const particleCount = 7000;
-const particleLife = 90;
-let mouseX = 0;
-let mouseY = 0;
-
-class Particle {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.life = particleLife;
-        this.velocity = {
-            x: (Math.random() - 0.5) * 3,
-            y: (Math.random() - 0.5) * 2
+        // Create orbiting particles
+        const orbitingCounts = {
+            small: 8,
+            medium: 5,
+            large: 3
         };
-        this.size = Math.random() * 2.5 + 0.5;
+
+        Object.entries(orbitingCounts).forEach(([size, count]) => {
+            for (let i = 0; i < count; i++) {
+                this.createOrbitingParticle(size);
+            }
+        });
     }
 
-    update() {
-        this.x += this.velocity.x;
-        this.y += this.velocity.y;
-        this.life--;
+    createFloatingParticle() {
+        const particle = document.createElement('div');
+        particle.className = 'particle particle-floating';
+        
+        const size = Math.random() * (100 - 30) + 30;
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+        const rotation = Math.random() * 360;
+        const shape = Math.random() > 0.5 ? 'square' : 'pentagon';
+        
+        particle.classList.add(shape);
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${x}px`;
+        particle.style.top = `${y}px`;
+        particle.style.transform = `rotate(${rotation}deg)`;
 
-        // Reduced random movement for smoother trails
-        this.velocity.x += (Math.random() - 0.5) * 0.1;
-        this.velocity.y += (Math.random() - 0.5) * 0.1;
+        const particleData = {
+            element: particle,
+            x,
+            y,
+            size,
+            rotation,
+            originalX: x,
+            originalY: y,
+            velocityX: 0,
+            velocityY: 0
+        };
+
+        this.floatingParticles.push(particleData);
+        document.body.appendChild(particle);
     }
 
-   
+    createOrbitingParticle(sizeCategory) {
+        const particle = document.createElement('div');
+        particle.className = 'particle particle-orbiting';
+        
+        const sizeRanges = {
+            small: [15, 30],
+            medium: [30, 45],
+            large: [45, 60]
+        };
+        
+        const [minSize, maxSize] = sizeRanges[sizeCategory];
+        const size = Math.random() * (maxSize - minSize) + minSize;
+        const x = this.mouseX;
+        const y = this.mouseY;
+        const rotation = Math.random() * 360;
+        
+        const shapes = ['square', 'pentagon', 'hexagon'];
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+        
+        particle.classList.add(shape);
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${x}px`;
+        particle.style.top = `${y}px`;
+        particle.style.transform = `rotate(${rotation}deg)`;
 
+        const particleData = {
+            element: particle,
+            x,
+            y,
+            size,
+            rotation,
+            orbitSpeed: Math.random() * 0.02 + 0.01,
+            orbitRadius: Math.random() * 80+ 40,
+            orbitOffset: Math.random() * Math.PI * 2,
+            velocityX: 0,
+            velocityY: 0
+        };
 
-draw() {
-const opacity = this.life / particleLife;
-ctx.fillStyle = `rgba(0, 191, 255, ${opacity * 0.5})`;
-ctx.beginPath();
-const spikes = 5; // Number of star spikes
-const outerRadius = this.size * 2;
-const innerRadius = this.size;
-const step = Math.PI / spikes;
+        this.orbitingParticles.push(particleData);
+        document.body.appendChild(particle);
+    }
 
-for (let i = 0; i < Math.PI * 2; i += step) {
-const x = this.x + Math.cos(i) * outerRadius;
-const y = this.y + Math.sin(i) * outerRadius;
-ctx.lineTo(x, y);
+    setupEventListeners() {
+        document.addEventListener('mousemove', (e) => {
+            // Calculate mouse speed
+            const dx = e.clientX - this.lastMouseX;
+            const dy = e.clientY - this.lastMouseY;
+            this.mouseSpeed = Math.sqrt(dx * dx + dy * dy);
+            
+            this.lastMouseX = this.mouseX;
+            this.lastMouseY = this.mouseY;
+            this.mouseX = e.clientX;
+            this.mouseY = e.clientY;
+            
+            // Update cursor tracer
+            this.cursorTracer.style.left = `${this.mouseX}px`;
+            this.cursorTracer.style.top = `${this.mouseY}px`;
+        });
 
-const innerX = this.x + Math.cos(i + step / 2) * innerRadius;
-const innerY = this.y + Math.sin(i + step / 2) * innerRadius;
-ctx.lineTo(innerX, innerY);
-}
-ctx.closePath();
-ctx.fill();
-}
+        window.addEventListener('resize', () => {
+            this.floatingParticles.forEach(particle => {
+                particle.originalX = Math.random() * window.innerWidth;
+                particle.originalY = Math.random() * window.innerHeight;
+            });
+        });
+    }
 
+    updateFloatingParticle(particle) {
+        const dx = this.mouseX - particle.x;
+        const dy = this.mouseY - particle.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
 
-
-
-
-}
-
-// Update mouse position
-window.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    
-    // Add new particles
-    for (let i = 0; i < 3; i++) {
-        if (particles.length < particleCount) {
-            particles.push(new Particle(mouseX, mouseY));
+        if (distance < 200) {
+            const angle = Math.atan2(dy, dx);
+            const force = (200 - distance) / 200;
+            particle.velocityX -= Math.cos(angle) * force * 1.3;
+            particle.velocityY -= Math.sin(angle) * force * 1.3;
         }
+
+        particle.velocityX *= 0.85;
+        particle.velocityY *= 0.85;
+
+        particle.velocityX += (particle.originalX - particle.x) * 0.01;
+        particle.velocityY += (particle.originalY - particle.y) * 0.01;
+
+        particle.x += particle.velocityX;
+        particle.y += particle.velocityY;
+        particle.rotation += 0.2;
+
+        particle.element.style.transform = `translate(${particle.velocityX}px, ${particle.velocityY}px) rotate(${particle.rotation}deg)`;
+        particle.element.style.left = `${particle.x}px`;
+        particle.element.style.top = `${particle.y}px`;
     }
+
+    updateOrbitingParticle(particle, index) {
+        const time = Date.now() * 0.001;
+        const speedFactor = Math.min(this.mouseSpeed * 0.05, 0.8);
+        
+        const angle = time * particle.orbitSpeed * speedFactor + 
+                     particle.orbitOffset + 
+                     (index * (Math.PI * 2) / this.orbitingParticles.length);
+        
+        particle.targetX = this.mouseX + Math.cos(angle) * particle.orbitRadius;
+        particle.targetY = this.mouseY + Math.sin(angle) * particle.orbitRadius;
+
+        const dx = particle.targetX - particle.x;
+        const dy = particle.targetY - particle.y;
+
+        particle.velocityX += dx * 0.02;
+        particle.velocityY += dy * 0.02;
+
+        particle.velocityX *= 0.85;
+        particle.velocityY *= 0.85;
+
+        particle.x += particle.velocityX;
+        particle.y += particle.velocityY;
+        
+        particle.rotation += Math.sqrt(particle.velocityX * particle.velocityX + 
+                                    particle.velocityY * particle.velocityY) * 0.5;
+
+        particle.element.style.transform = `translate(${particle.velocityX}px, ${particle.velocityY}px) rotate(${particle.rotation}deg)`;
+        particle.element.style.left = `${particle.x}px`;
+        particle.element.style.top = `${particle.y}px`;
+    }
+
+    animate() {
+        this.floatingParticles.forEach(particle => this.updateFloatingParticle(particle));
+        this.orbitingParticles.forEach((particle, index) => this.updateOrbitingParticle(particle, index));
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
+// Initialize the particle system when the page loads
+window.addEventListener('load', () => {
+    new ParticleSystem();
 });
-
-// Animation loop
-function animate() {
-    // Clear the entire canvas completely instead of using semi-transparent fill
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Update and draw particles
-    for (let i = particles.length - 1; i >= 0; i--) {
-        particles[i].update();
-        particles[i].draw();
-
-        // Remove dead particles
-        if (particles[i].life <= 0) {
-            particles.splice(i, 1);
-        }
-    }
-
-    requestAnimationFrame(animate);
-}
-
-animate();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Typing Effect
 const titles = ["Full Stack Web Developer.", "DSA Enthusiast.", "Software Engineer."];
