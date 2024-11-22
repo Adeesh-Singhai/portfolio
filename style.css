@@ -41,7 +41,7 @@ body{
 }
 
 .particle-orbiting {
-    background-color: rgba(59, 130, 246, 0.2);
+    background-color: rgba(0, 208, 255, 0.916);
     transition: transform 0.15s ease-out;
 }
 

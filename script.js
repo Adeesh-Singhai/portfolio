@@ -15,7 +15,7 @@ class ParticleSystem {
 
     init() {
         // Create floating background particles
-        for (let i = 0; i < 300; i++) {
+        for (let i = 0; i < 150; i++) {
             this.createFloatingParticle();
         }
 
