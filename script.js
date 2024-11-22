@@ -21,13 +21,11 @@ class ParticleSystem {
 
         // Enhanced color variations
         const colors = [
-            '#2C3E50', // Dark Blue Gray
-            '#34495E', // Grayish Blue
-            '#7F8C8D', // Gray
-            '#2980B9', // Soft Blue
-            '#3498DB', // Bright Blue
-            '#16A085', // Teal
-            '#1ABC9C'  // Turquoise
+            // Teal
+            '#333333',
+            '#333333', '#333333', '#333333', '#333333', '#333333', '#333333',
+
+             // Turquoise
         ];
 
         // Create orbiting particles with more diversity
