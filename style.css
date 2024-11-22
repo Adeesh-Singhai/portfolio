@@ -43,6 +43,8 @@ body{
 .particle-orbiting {
     background-color: rgba(0, 208, 255, 0.916);
     transition: transform 0.15s ease-out;
+    z-index:-50px;
+    opacity: 60%;
 }
 
 .particle.square {
@@ -145,7 +147,7 @@ body{
 }
 
 .left-half p {
-    color: #94A3B8;
+    color: #ffffff;
     font-size: 24px;
     margin-bottom: 20px;
 }
@@ -153,7 +155,9 @@ body{
 .left-half h1 {
     font-size: 48px;
     font-weight: bold;
-    color: #E2E8F0;
+
+    text-shadow: -1px -1px 0 #ff0303, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+    color: #ffffff;
     line-height: 1.2;
     margin-bottom: 10px;
 }
@@ -163,7 +167,7 @@ body{
 }
 
 .left-half .description {
-    color: #94A3B8;
+    color: #ffffff;
     font-size: 16px;
     line-height: 1.6;
     margin-top: 5px;
@@ -176,7 +180,7 @@ body{
 }
 
 .social-links .find-me {
-    color: #94A3B8;
+    color: #ffffff;
     text-transform: uppercase;
     font-size: 14px;
     margin-bottom: 15px;
@@ -188,7 +192,7 @@ body{
 }
 
 .social-links .icons a {
-    color: #94A3B8;
+    color: #ffffff;
     transition: color 0.3s;
 }
 
