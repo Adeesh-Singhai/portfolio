@@ -198,11 +198,15 @@ body{
 }
 
 
-
-i.fa-regular{ 
+i.fab.fa-github.fa-lg{
     font-size: 1.5rem;
 
-
+}
+i.fab.fa-linkedin.fa-lg{
+    font-size: 1.5rem;
+}
+i.fa-regular{ 
+    font-size: 1.5rem;
 }
 
 .social-links .icons a:hover {
