@@ -991,106 +991,118 @@ color:#ff004f;
 
 
 /* achievements-section-css */
-
-
-.achievement-line{
+.achievement-line {
     display: flex;
+    position: relative; /* Added for bullet positioning */
 }
 
-.upper{
-    height:50%;
+.upper {
+    height: 50%;
     border-bottom: #ffffff solid 2px;
-
-}
-.down{
-    height:50%;
 }
 
-.line{
+.down {
+    height: 50%;
+}
+
+.line {
     flex-basis: 10%;
+    position: relative; /* Added for bullet positioning */
+}
+
+/* Add bullet point */
+.line::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background-color: #ff004f; /* Matching your theme color */
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+/* Add horizontal connector line */
+.line::before {
+    content: '';
+    position: absolute;
+    width: 20px; /* Length of horizontal line */
+    height: 2px;
+    background-color: #ffffff;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .achievements {
-
-    flex-basis:90% ;
+    flex-basis: 90%;
     padding: 2rem;
     display: flex;
     justify-content: space-between;
-  }
+}
 
-  .achievements h2 {
+.achievements h2 {
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 1.5rem;
-  }
+}
 
-.achievements h2::after{
+.achievements h2::after {
     content: '';
-    width:0;
-    height:3px;
+    width: 0;
+    height: 3px;
     background: #ff004f;
-    display:block;
-    margin:auto;
-    transition:0.5s;
+    display: block;
+    margin: auto;
+    transition: 0.5s;
 }
 
-.achievements h2:hover::after{
-    width:100%;
-
-
+.achievements h2:hover::after {
+    width: 100%;
 }
 
-
-
-
-
-  .accolades,
-  .extracurricular {
+.accolades,
+.extracurricular {
     flex: 1;
     margin: 0 1rem;
     border-left: solid 2px #ccc;
+}
 
-  }
-
-  .extracurricular h2{
+.extracurricular h2,
+.accolades h2 {
     margin-left: 65px;
     color: #ff004f;
     text-shadow: 0.5px 0.5px 0.5px rgba(255, 255, 255, 0.4);
-  }
+}
 
-  
-  .accolades h2{
-    margin-left: 65px;
-    color: #ff004f;
-    text-shadow: 0.5px 0.5px 0.5px rgba(255, 255, 255, 0.4);
-  }
-
-  .achievement {
+.achievement {
     background-color: #2b2b2b;
     padding: 1.5rem;
     border-radius: 8px;
-    
-    flex-basis:90% ;
+    flex-basis: 90%;
     margin-bottom: 1.5rem;
     box-shadow: 2px 2px 2px rgba(255, 255, 255, 0.4);
-  }
+}
 
-  .achievement:hover{
+.achievement:hover {
     background-color: #151515;
     box-shadow: 2px 2px 8px rgba(255, 254, 254, 1.7);
-  }
+}
 
-  .achievement h3 {
+.achievement h3 {
     font-size: 1.25rem;
     font-weight: bold;
-    color: #25f52c ;
+    color: #25f52c;
     margin-bottom: 0.5rem;
-  }
+}
 
-  .achievement p {
+.achievement p {
     font-size: 0.9rem;
     line-height: 1.5;
-  }
+}
 
 
 
