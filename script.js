@@ -14,30 +14,21 @@ class ParticleSystem {
     }
 
     init() {
-        // Increase number of floating background particles
-        for (let i = 0; i < 500; i++) {
+        // Create floating background particles
+        for (let i = 0; i < 300; i++) {
             this.createFloatingParticle();
         }
 
-        // Enhanced color variations
-        const colors = [
-            // Teal
-            '#333333',
-            '#333333', '#333333', '#333333', '#333333', '#333333', '#333333',
-
-             // Turquoise
-        ];
-
-        // Create orbiting particles with more diversity
+        // Create orbiting particles
         const orbitingCounts = {
-            small: 12,
-            medium: 8,
-            large: 5
+            small: 8,
+            medium: 5,
+            large: 3
         };
 
         Object.entries(orbitingCounts).forEach(([size, count]) => {
             for (let i = 0; i < count; i++) {
-                this.createOrbitingParticle(size, colors);
+                this.createOrbitingParticle(size);
             }
         });
     }
@@ -46,11 +37,11 @@ class ParticleSystem {
         const particle = document.createElement('div');
         particle.className = 'particle particle-floating';
         
-        const size = Math.random() * (120 - 20) + 20;
+        const size = Math.random() * (100 - 30) + 30;
         const x = Math.random() * window.innerWidth;
         const y = Math.random() * window.innerHeight;
         const rotation = Math.random() * 360;
-        const shape = ['square', 'pentagon', 'hexagon', 'triangle'][Math.floor(Math.random() * 4)];
+        const shape = Math.random() > 0.5 ? 'square' : 'pentagon';
         
         particle.classList.add(shape);
         particle.style.width = `${size}px`;
@@ -58,8 +49,6 @@ class ParticleSystem {
         particle.style.left = `${x}px`;
         particle.style.top = `${y}px`;
         particle.style.transform = `rotate(${rotation}deg)`;
-        particle.style.opacity = (Math.random() * 0.3 + 0.1).toFixed(2);
-        particle.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
 
         const particleData = {
             element: particle,
@@ -77,7 +66,7 @@ class ParticleSystem {
         document.body.appendChild(particle);
     }
 
-    createOrbitingParticle(sizeCategory, colors) {
+    createOrbitingParticle(sizeCategory) {
         const particle = document.createElement('div');
         particle.className = 'particle particle-orbiting';
         
@@ -93,7 +82,7 @@ class ParticleSystem {
         const y = this.mouseY;
         const rotation = Math.random() * 360;
         
-        const shapes = ['square', 'pentagon', 'hexagon', 'triangle'];
+        const shapes = ['square', 'pentagon', 'hexagon'];
         const shape = shapes[Math.floor(Math.random() * shapes.length)];
         
         particle.classList.add(shape);
@@ -102,8 +91,6 @@ class ParticleSystem {
         particle.style.left = `${x}px`;
         particle.style.top = `${y}px`;
         particle.style.transform = `rotate(${rotation}deg)`;
-        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        particle.style.opacity = (Math.random() * 0.5 + 0.3).toFixed(2);
 
         const particleData = {
             element: particle,
@@ -112,7 +99,7 @@ class ParticleSystem {
             size,
             rotation,
             orbitSpeed: Math.random() * 0.02 + 0.01,
-            orbitRadius: Math.random() * 120 + 60,
+            orbitRadius: Math.random() * 80+ 40,
             orbitOffset: Math.random() * Math.PI * 2,
             velocityX: 0,
             velocityY: 0
@@ -122,7 +109,94 @@ class ParticleSystem {
         document.body.appendChild(particle);
     }
 
-    // Existing methods remain the same...
+    setupEventListeners() {
+        document.addEventListener('mousemove', (e) => {
+            // Calculate mouse speed
+            const dx = e.clientX - this.lastMouseX;
+            const dy = e.clientY - this.lastMouseY;
+            this.mouseSpeed = Math.sqrt(dx * dx + dy * dy);
+            
+            this.lastMouseX = this.mouseX;
+            this.lastMouseY = this.mouseY;
+            this.mouseX = e.clientX;
+            this.mouseY = e.clientY;
+            
+            // Update cursor tracer
+            this.cursorTracer.style.left = `${this.mouseX}px`;
+            this.cursorTracer.style.top = `${this.mouseY}px`;
+        });
+
+        window.addEventListener('resize', () => {
+            this.floatingParticles.forEach(particle => {
+                particle.originalX = Math.random() * window.innerWidth;
+                particle.originalY = Math.random() * window.innerHeight;
+            });
+        });
+    }
+
+    updateFloatingParticle(particle) {
+        const dx = this.mouseX - particle.x;
+        const dy = this.mouseY - particle.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 200) {
+            const angle = Math.atan2(dy, dx);
+            const force = (200 - distance) / 200;
+            particle.velocityX -= Math.cos(angle) * force * 1.3;
+            particle.velocityY -= Math.sin(angle) * force * 1.3;
+        }
+
+        particle.velocityX *= 0.85;
+        particle.velocityY *= 0.85;
+
+        particle.velocityX += (particle.originalX - particle.x) * 0.01;
+        particle.velocityY += (particle.originalY - particle.y) * 0.01;
+
+        particle.x += particle.velocityX;
+        particle.y += particle.velocityY;
+        particle.rotation += 0.2;
+
+        particle.element.style.transform = `translate(${particle.velocityX}px, ${particle.velocityY}px) rotate(${particle.rotation}deg)`;
+        particle.element.style.left = `${particle.x}px`;
+        particle.element.style.top = `${particle.y}px`;
+    }
+
+    updateOrbitingParticle(particle, index) {
+        const time = Date.now() * 0.001;
+        const speedFactor = Math.min(this.mouseSpeed * 0.05, 0.8);
+        
+        const angle = time * particle.orbitSpeed * speedFactor + 
+                     particle.orbitOffset + 
+                     (index * (Math.PI * 2) / this.orbitingParticles.length);
+        
+        particle.targetX = this.mouseX + Math.cos(angle) * particle.orbitRadius;
+        particle.targetY = this.mouseY + Math.sin(angle) * particle.orbitRadius;
+
+        const dx = particle.targetX - particle.x;
+        const dy = particle.targetY - particle.y;
+
+        particle.velocityX += dx * 0.02;
+        particle.velocityY += dy * 0.02;
+
+        particle.velocityX *= 0.85;
+        particle.velocityY *= 0.85;
+
+        particle.x += particle.velocityX;
+        particle.y += particle.velocityY;
+        
+        particle.rotation += Math.sqrt(particle.velocityX * particle.velocityX + 
+                                    particle.velocityY * particle.velocityY) * 0.5;
+
+        particle.element.style.transform = `translate(${particle.velocityX}px, ${particle.velocityY}px) rotate(${particle.rotation}deg)`;
+        particle.element.style.left = `${particle.x}px`;
+        particle.element.style.top = `${particle.y}px`;
+    }
+
+    animate() {
+        this.floatingParticles.forEach(particle => this.updateFloatingParticle(particle));
+        this.orbitingParticles.forEach((particle, index) => this.updateOrbitingParticle(particle, index));
+        requestAnimationFrame(() => this.animate());
+    }
 }
 
 // Initialize the particle system when the page loads
