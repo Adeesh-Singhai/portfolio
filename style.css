@@ -28,52 +28,35 @@ body{
 
 
 .particle {
-    position: absolute;
+    position: fixed;
     pointer-events: none;
-    transition: transform 0.15s ease-out;
+    z-index: -1;
+    transition: transform 0.3s ease;
 }
 
 .particle-floating {
-    background-color: rgba(55, 65, 81, 0.15);
-    transition: transform 0.3s ease-out;
+    background-color: rgba(44, 62, 80, 0.1);
 }
 
 .particle-orbiting {
-    background-color: rgba(59, 130, 246, 0.2);
-    transition: transform 0.15s ease-out;
+    background-color: rgba(52, 73, 94, 0.2);
 }
 
-.square {
+.particle.square {
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
 }
 
-.pentagon {
+.particle.pentagon {
     clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
 }
 
-.hexagon {
+.particle.hexagon {
     clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
 }
 
-.content {
-    position: relative;
-    z-index: 10;
-    color: white;
-    padding: 2rem;
+.particle.triangle {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
-
-.cursor-tracer {
-    position: fixed;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: rgba(59, 130, 246, 0.5);
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-}
-
 
 
 
