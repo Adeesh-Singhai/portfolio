@@ -197,6 +197,14 @@ body{
     transition: color 0.3s;
 }
 
+
+
+i.fa-regular{ 
+    font-size: 1.5rem;
+
+
+}
+
 .social-links .icons a:hover {
     color: #ff004f;
 }
