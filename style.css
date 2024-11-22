@@ -991,22 +991,26 @@ color:#ff004f;
 
 
 /* achievements-section-css */
-/* Timeline vertical line */
-.achievement-line {
+.achievements {
+    flex-basis: 90%;
+    padding: 2rem;
     display: flex;
-    position: relative;
-    padding-left: 20px; /* Space for the vertical line and bullet */
-    margin-left: 20px; /* Offset from the left */
+    justify-content: space-between;
+    gap: 2rem;
   }
   
-  /* Main vertical line */
   .accolades, .extracurricular {
+    flex: 1;
     position: relative;
-    padding-left: 30px;
-    margin-left: 20px;
   }
   
-  .accolades::before, .extracurricular::before {
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+  
+  /* Vertical line */
+  .timeline::before {
     content: '';
     position: absolute;
     left: 0;
@@ -1016,44 +1020,51 @@ color:#ff004f;
     background: #ff004f;
   }
   
-  /* Bullet points */
-  .achievement-line::before {
-    content: '';
-    position: absolute;
-    left: -8px; /* Adjust based on bullet size */
-    top: 30px; /* Align with achievement box */
-    width: 16px;
-    height: 16px;
-    background: #ff004f;
-    border-radius: 50%;
-    border: 3px solid #2b2b2b;
-    z-index: 1;
+  .achievement-line {
+    position: relative;
+    margin-bottom: 2rem;
   }
   
-  /* Horizontal connector line */
-  .achievement-line::after {
-    content: '';
+  /* Bullet point */
+  .timeline-bullet {
     position: absolute;
-    left: 8px; /* Connect from bullet to achievement box */
-    top: 38px; /* Align with bullet */
-    width: 20px;
+    left: -44px;
+    top: 24px;
+    width: 12px;
+    height: 12px;
+    background: #ff004f;
+    border: 2px solid white;
+    border-radius: 50%;
+    z-index: 2;
+  }
+  
+  /* Horizontal connector */
+  .timeline-connector {
+    position: absolute;
+    left: -40px;
+    top: 29px;
+    width: 40px;
     height: 2px;
     background: #ff004f;
   }
   
-  /* Existing styles with some adjustments */
-  .achievements {
-    flex-basis: 90%;
-    padding: 2rem;
-    display: flex;
-    justify-content: space-between;
+  .achievement {
+    background-color: #2b2b2b;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 2px 2px 2px rgba(255, 255, 255, 0.4);
+  }
+  
+  .achievement:hover {
+    background-color: #151515;
+    box-shadow: 2px 2px 8px rgba(255, 254, 254, 1.7);
   }
   
   .achievements h2 {
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 1.5rem;
-    margin-left: 30px; /* Align with timeline */
+    color: white;
   }
   
   .achievements h2::after {
@@ -1070,25 +1081,6 @@ color:#ff004f;
     width: 100%;
   }
   
-  .accolades, .extracurricular {
-    flex: 1;
-    margin: 0 1rem;
-  }
-  
-  .achievement {
-    background-color: #2b2b2b;
-    padding: 1.5rem;
-    border-radius: 8px;
-    flex-basis: 90%;
-    margin-bottom: 1.5rem;
-    box-shadow: 2px 2px 2px rgba(255, 255, 255, 0.4);
-  }
-  
-  .achievement:hover {
-    background-color: #151515;
-    box-shadow: 2px 2px 8px rgba(255, 254, 254, 1.7);
-  }
-  
   .achievement h3 {
     font-size: 1.25rem;
     font-weight: bold;
@@ -1099,8 +1091,8 @@ color:#ff004f;
   .achievement p {
     font-size: 0.9rem;
     line-height: 1.5;
+    color: white;
   }
-
 
 
   /* changes  */
