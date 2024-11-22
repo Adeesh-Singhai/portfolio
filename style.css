@@ -763,18 +763,7 @@ color:#ff004f;
     box-shadow: 2px 2px 2px rgba(255, 255, 255, 0.4);
 }
 
-.timeline-item h3 ::before{
-    content: '';
-    position: absolute;
-    width: 100%;
-    height:5px;
-    background-color: white;
-    top: 0;
-    left: 0;
-    color: white;
-    
 
-}
 
 
 /* .achievement {
@@ -814,6 +803,20 @@ color:#ff004f;
     color: #25f52c;
 
     margin-bottom: 0.5rem;
+    position: relative;
+}
+
+
+
+.timeline-item h3::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background-color: white;
+    top: 0;
+    left: 0;
+    z-index: -1; /* Places the bar behind the h3 content */
 }
 
 .timeline-item .institution {
