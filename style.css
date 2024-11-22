@@ -1010,7 +1010,7 @@ color:#ff004f;
   }
   
   /* Vertical line */
-  .timeline::before {
+  .achievement-timeline::before {
     content: '';
     position: absolute;
     left: 0;
@@ -1026,7 +1026,7 @@ color:#ff004f;
   }
   
   /* Bullet point */
-  .timeline-bullet {
+  .achievement-timeline-bullet {
     position: absolute;
     left: -44px;
     top: 24px;
@@ -1039,7 +1039,7 @@ color:#ff004f;
   }
   
   /* Horizontal connector */
-  .timeline-connector {
+  .achievement-timeline-connector {
     position: absolute;
     left: -40px;
     top: 29px;
