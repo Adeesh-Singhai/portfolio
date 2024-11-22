@@ -28,18 +28,21 @@ body{
 
 
 .particle {
-    position: fixed;
+    position: absolute;
     pointer-events: none;
     z-index: -1;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease-out;
 }
 
 .particle-floating {
     background-color: rgba(44, 62, 80, 0.1);
+    transition: transform 0.3s ease-out;
+
 }
 
 .particle-orbiting {
-    background-color: rgba(52, 73, 94, 0.2);
+    background-color: rgba(59, 130, 246, 0.2);
+    transition: transform 0.15s ease-out;
 }
 
 .particle.square {
@@ -56,6 +59,28 @@ body{
 
 .particle.triangle {
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+
+
+.content {
+    position: relative;
+    z-index: 10;
+    color: white;
+    padding: 2rem;
+}
+
+
+.cursor-tracer {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: rgba(59, 130, 246, 0.5);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
 }
 
 
