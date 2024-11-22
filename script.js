@@ -8,19 +8,33 @@ class ParticleSystem {
         this.lastMouseY = this.mouseY;
         this.mouseSpeed = 0;
         this.cursorTracer = document.querySelector('.cursor-tracer');
+        this.isMobile = window.innerWidth <= 768;
         this.init();
         this.setupEventListeners();
         this.animate();
     }
 
     init() {
+        // Adjust particle count based on screen size
+        const particleCount = this.isMobile ? 50 : 150;
+        
+        // Clear existing particles
+        this.floatingParticles.forEach(p => p.element.remove());
+        this.orbitingParticles.forEach(p => p.element.remove());
+        this.floatingParticles = [];
+        this.orbitingParticles = [];
+
         // Create floating background particles
-        for (let i = 0; i < 150; i++) {
+        for (let i = 0; i < particleCount; i++) {
             this.createFloatingParticle();
         }
 
-        // Create orbiting particles
-        const orbitingCounts = {
+        // Adjust orbiting particle counts for mobile
+        const orbitingCounts = this.isMobile ? {
+            small: 4,
+            medium: 3,
+            large: 2
+        } : {
             small: 8,
             medium: 5,
             large: 3
@@ -37,7 +51,11 @@ class ParticleSystem {
         const particle = document.createElement('div');
         particle.className = 'particle particle-floating';
         
-        const size = Math.random() * (100 - 30) + 30;
+        // Adjust size based on screen
+        const minSize = this.isMobile ? 20 : 30;
+        const maxSize = this.isMobile ? 60 : 100;
+        const size = Math.random() * (maxSize - minSize) + minSize;
+        
         const x = Math.random() * window.innerWidth;
         const y = Math.random() * window.innerHeight;
         const rotation = Math.random() * 360;
@@ -70,7 +88,12 @@ class ParticleSystem {
         const particle = document.createElement('div');
         particle.className = 'particle particle-orbiting';
         
-        const sizeRanges = {
+        // Adjust size ranges for mobile
+        const sizeRanges = this.isMobile ? {
+            small: [10, 20],
+            medium: [20, 30],
+            large: [30, 40]
+        } : {
             small: [15, 30],
             medium: [30, 45],
             large: [45, 60]
@@ -92,6 +115,11 @@ class ParticleSystem {
         particle.style.top = `${y}px`;
         particle.style.transform = `rotate(${rotation}deg)`;
 
+        // Adjust orbit radius for mobile
+        const orbitRadius = this.isMobile ? 
+            Math.random() * 40 + 20 : 
+            Math.random() * 80 + 40;
+
         const particleData = {
             element: particle,
             x,
@@ -99,7 +127,7 @@ class ParticleSystem {
             size,
             rotation,
             orbitSpeed: Math.random() * 0.02 + 0.01,
-            orbitRadius: Math.random() * 80+ 40,
+            orbitRadius,
             orbitOffset: Math.random() * Math.PI * 2,
             velocityX: 0,
             velocityY: 0
@@ -110,27 +138,38 @@ class ParticleSystem {
     }
 
     setupEventListeners() {
-        document.addEventListener('mousemove', (e) => {
-            // Calculate mouse speed
-            const dx = e.clientX - this.lastMouseX;
-            const dy = e.clientY - this.lastMouseY;
+        // Handle both mouse and touch events
+        const moveHandler = (e) => {
+            const clientX = e.clientX || (e.touches ? e.touches[0].clientX : this.mouseX);
+            const clientY = e.clientY || (e.touches ? e.touches[0].clientY : this.mouseY);
+            
+            const dx = clientX - this.lastMouseX;
+            const dy = clientY - this.lastMouseY;
             this.mouseSpeed = Math.sqrt(dx * dx + dy * dy);
             
             this.lastMouseX = this.mouseX;
             this.lastMouseY = this.mouseY;
-            this.mouseX = e.clientX;
-            this.mouseY = e.clientY;
+            this.mouseX = clientX;
+            this.mouseY = clientY;
             
-            // Update cursor tracer
-            this.cursorTracer.style.left = `${this.mouseX}px`;
-            this.cursorTracer.style.top = `${this.mouseY}px`;
-        });
+            if (this.cursorTracer && !this.isMobile) {
+                this.cursorTracer.style.left = `${this.mouseX}px`;
+                this.cursorTracer.style.top = `${this.mouseY}px`;
+            }
+        };
 
+        document.addEventListener('mousemove', moveHandler);
+        document.addEventListener('touchmove', moveHandler);
+        document.addEventListener('touchstart', moveHandler);
+
+        // Handle window resize
+        let resizeTimeout;
         window.addEventListener('resize', () => {
-            this.floatingParticles.forEach(particle => {
-                particle.originalX = Math.random() * window.innerWidth;
-                particle.originalY = Math.random() * window.innerHeight;
-            });
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                this.isMobile = window.innerWidth <= 768;
+                this.init();
+            }, 250);
         });
     }
 
@@ -138,12 +177,15 @@ class ParticleSystem {
         const dx = this.mouseX - particle.x;
         const dy = this.mouseY - particle.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        // Adjust interaction radius for mobile
+        const interactionRadius = this.isMobile ? 100 : 200;
 
-        if (distance < 200) {
+        if (distance < interactionRadius) {
             const angle = Math.atan2(dy, dx);
-            const force = (200 - distance) / 200;
-            particle.velocityX -= Math.cos(angle) * force * 1.3;
-            particle.velocityY -= Math.sin(angle) * force * 1.3;
+            const force = (interactionRadius - distance) / interactionRadius;
+            particle.velocityX -= Math.cos(angle) * force * (this.isMobile ? 0.8 : 1.3);
+            particle.velocityY -= Math.sin(angle) * force * (this.isMobile ? 0.8 : 1.3);
         }
 
         particle.velocityX *= 0.85;
@@ -154,7 +196,7 @@ class ParticleSystem {
 
         particle.x += particle.velocityX;
         particle.y += particle.velocityY;
-        particle.rotation += 0.2;
+        particle.rotation += this.isMobile ? 0.1 : 0.2;
 
         particle.element.style.transform = `translate(${particle.velocityX}px, ${particle.velocityY}px) rotate(${particle.rotation}deg)`;
         particle.element.style.left = `${particle.x}px`;
@@ -163,7 +205,7 @@ class ParticleSystem {
 
     updateOrbitingParticle(particle, index) {
         const time = Date.now() * 0.001;
-        const speedFactor = Math.min(this.mouseSpeed * 0.05, 0.8);
+        const speedFactor = Math.min(this.mouseSpeed * (this.isMobile ? 0.03 : 0.05), this.isMobile ? 0.5 : 0.8);
         
         const angle = time * particle.orbitSpeed * speedFactor + 
                      particle.orbitOffset + 
@@ -175,8 +217,8 @@ class ParticleSystem {
         const dx = particle.targetX - particle.x;
         const dy = particle.targetY - particle.y;
 
-        particle.velocityX += dx * 0.02;
-        particle.velocityY += dy * 0.02;
+        particle.velocityX += dx * (this.isMobile ? 0.01 : 0.02);
+        particle.velocityY += dy * (this.isMobile ? 0.01 : 0.02);
 
         particle.velocityX *= 0.85;
         particle.velocityY *= 0.85;
@@ -185,7 +227,7 @@ class ParticleSystem {
         particle.y += particle.velocityY;
         
         particle.rotation += Math.sqrt(particle.velocityX * particle.velocityX + 
-                                    particle.velocityY * particle.velocityY) * 0.5;
+                                    particle.velocityY * particle.velocityY) * (this.isMobile ? 0.3 : 0.5);
 
         particle.element.style.transform = `translate(${particle.velocityX}px, ${particle.velocityY}px) rotate(${particle.rotation}deg)`;
         particle.element.style.left = `${particle.x}px`;
@@ -193,8 +235,11 @@ class ParticleSystem {
     }
 
     animate() {
-        this.floatingParticles.forEach(particle => this.updateFloatingParticle(particle));
-        this.orbitingParticles.forEach((particle, index) => this.updateOrbitingParticle(particle, index));
+        // Skip animation frames on mobile for better performance
+        if (!this.isMobile || Math.random() > 0.5) {
+            this.floatingParticles.forEach(particle => this.updateFloatingParticle(particle));
+            this.orbitingParticles.forEach((particle, index) => this.updateOrbitingParticle(particle, index));
+        }
         requestAnimationFrame(() => this.animate());
     }
 }

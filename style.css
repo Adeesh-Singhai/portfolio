@@ -86,6 +86,20 @@ body{
 }
 
 
+@media (max-width: 768px) {
+    .particle-floating {
+      background-color: rgb(63 0 255 / 15%);  /* Slightly more visible on mobile */
+    }
+    
+    .particle-orbiting {
+      opacity: 70%;  /* More visible on mobile */
+    }
+    
+    .cursor-tracer {
+      display: none;  /* Hide cursor tracer on mobile */
+    }
+  }
+
 
 
 
