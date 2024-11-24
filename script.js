@@ -16,7 +16,7 @@ class ParticleSystem {
 
     init() {
         // Adjust particle count based on screen size
-        const particleCount = this.isMobile ? 50 : 150;
+        const particleCount = this.isMobile ? 30 : 150;
         
         // Clear existing particles
         this.floatingParticles.forEach(p => p.element.remove());
