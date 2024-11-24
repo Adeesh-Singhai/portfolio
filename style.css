@@ -1006,7 +1006,7 @@ color:#ff004f;
   
   .achievement-timeline {
     position: relative;
-    padding-left: 39px;
+    padding-left: 37.5px;
   }
   
   /* Vertical line */
@@ -1030,8 +1030,8 @@ color:#ff004f;
     position: absolute;
     left: -44px;
     top: 24px;
-    width: 12px;
-    height: 12px;
+    width: 15px;
+    height: 15px;
     background: #ff004f;
     border: 2px solid white;
     border-radius: 50%;
@@ -1064,7 +1064,7 @@ color:#ff004f;
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 1.5rem;
-    color: white;
+    color: #ff004f;
   }
   
   .achievements h2::after {
